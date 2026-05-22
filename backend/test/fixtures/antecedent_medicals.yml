@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dossier_medical: one
+  nom: MyString
+  description: MyText
+  date_diagnostic: 2026-05-22
+
+two:
+  dossier_medical: two
+  nom: MyString
+  description: MyText
+  date_diagnostic: 2026-05-22

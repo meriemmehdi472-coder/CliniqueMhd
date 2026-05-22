@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  assistant: one
+  type_demande: MyString
+  message: MyText
+  status: MyString
+  date_traitement: 2026-05-23 00:36:00
+
+two:
+  user: two
+  assistant: two
+  type_demande: MyString
+  message: MyText
+  status: MyString
+  date_traitement: 2026-05-23 00:36:00
