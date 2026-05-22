@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  specialite: MyString
+  anciennete: 1
+  description: MyText
+  reseaux_sociaux: 
+
+two:
+  user: two
+  specialite: MyString
+  anciennete: 1
+  description: MyText
+  reseaux_sociaux: 

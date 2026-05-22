@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  client: one
+  medecin: one
+  assistant: one
+  date_rdv: 2026-05-22
+  heure_debut: 2026-05-22 23:25:53
+  heure_fin: 2026-05-22 23:25:53
+  motif: MyText
+  status: MyString
+
+two:
+  client: two
+  medecin: two
+  assistant: two
+  date_rdv: 2026-05-22
+  heure_debut: 2026-05-22 23:25:53
+  heure_fin: 2026-05-22 23:25:53
+  motif: MyText
+  status: MyString

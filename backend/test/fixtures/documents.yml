@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dossier_medical: one
+  uploaded_by: one
+  nom_fichier: MyString
+  chemin_fichier: MyString
+  type_document: MyString
+  extension: MyString
+  status: MyString
+
+two:
+  dossier_medical: two
+  uploaded_by: two
+  nom_fichier: MyString
+  chemin_fichier: MyString
+  type_document: MyString
+  extension: MyString
+  status: MyString
