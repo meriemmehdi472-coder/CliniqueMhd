@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :documents, dependent: :destroy
   has_many :rendez_vous, class_name: "RendezVou", foreign_key: :client_id, dependent: :destroy
   has_many :demandes, dependent: :destroy
+  has_many :email_logs, dependent: :destroy, foreign_key: :destinataire_id
 
   validates :first_name, presence: true
   validates :last_name, presence: true

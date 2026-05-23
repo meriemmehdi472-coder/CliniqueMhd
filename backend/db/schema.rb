@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_22_223600) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_23_012616) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -91,6 +91,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_223600) do
     t.index ["user_id"], name: "index_dossier_medicals_on_user_id"
   end
 
+  create_table "email_logs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "date_envoi"
+    t.bigint "destinataire_id", null: false
+    t.string "status"
+    t.string "type_email"
+    t.datetime "updated_at", null: false
+    t.index ["destinataire_id"], name: "index_email_logs_on_destinataire_id"
+  end
+
+  create_table "faq_items", force: :cascade do |t|
+    t.boolean "actif"
+    t.datetime "created_at", null: false
+    t.integer "order"
+    t.string "question"
+    t.string "response"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "medecins", force: :cascade do |t|
     t.integer "anciennete"
     t.datetime "created_at", null: false
@@ -141,6 +160,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_223600) do
   add_foreign_key "documents", "dossier_medicals"
   add_foreign_key "documents", "users", column: "uploaded_by_id"
   add_foreign_key "dossier_medicals", "users"
+  add_foreign_key "email_logs", "users", column: "destinataire_id"
   add_foreign_key "medecins", "users"
   add_foreign_key "rendez_vous", "assistants"
   add_foreign_key "rendez_vous", "medecins"
