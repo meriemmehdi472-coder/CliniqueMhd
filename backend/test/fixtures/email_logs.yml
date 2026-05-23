@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  destinataire: one
+  type_email: MyString
+  status: MyString
+  date_envoi: 2026-05-23 01:58:16
+
+two:
+  destinataire: two
+  type_email: MyString
+  status: MyString
+  date_envoi: 2026-05-23 01:58:16
