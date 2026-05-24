@@ -1,22 +1,25 @@
-import {Outlet} from "react-router-dom";
-import  Sidebar  from "./Sidebar";
+import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 
-export default function AppLayout(){
-    return(
-        <div className="mini-h-screen bg-slate-50">
-        
-            <Sidebar/>
+export default function AppLayout() {
+  const [role, setRole] = useState("ADMIN");
 
-            <div className="ml-64">
-                <Navbar/>
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <Sidebar role={role} />
 
-                <main className="p-8">
-                    <Outlet/>
-                </main>
-            </div>
-        </div>
+      <div className="ml-64">
+        <Navbar
+          role={role}
+          setRole={setRole}
+        />
 
-
-    )
+        <main className="p-8">
+          <Outlet context={{ role }} />
+        </main>
+      </div>
+    </div>
+  );
 }
