@@ -1,2 +1,0 @@
-class FaqItem < ApplicationRecord
-end
