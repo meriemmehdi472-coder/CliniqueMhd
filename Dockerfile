@@ -21,9 +21,8 @@ ENV RAILS_ENV="production" \
 
 FROM backend-base AS backend-build
 RUN apt-get update -qq \
-    && apt-get install --no-install-recommends -y curl libvips postgresql-client nginx \
-    && rm -f /etc/nginx/sites-enabled/default \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    && apt-get install --no-install-recommends -y \
+    build-essential gcc g++ make libc6-dev git libpq-dev libvips pkg-config
 COPY backend/Gemfile backend/Gemfile.lock ./
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
@@ -39,7 +38,7 @@ FROM backend-base
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libvips postgresql-client nginx && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
+RUN rm -f /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
 # Copy built gems and backend code
 COPY --from=backend-build /usr/local/bundle /usr/local/bundle
 COPY --from=backend-build /rails /rails
