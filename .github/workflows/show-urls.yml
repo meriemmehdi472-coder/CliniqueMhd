@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: preprod
-      url: https://preprod.monsite.fr
+      url: https://cliniquemhd-preprod.fly.dev
     steps:
       - run: echo "Enregistrement de l'URL preprod"
 
@@ -16,6 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: prod
-      url: https://www.monsite.fr
+      url: https://cliniquemhd-prod.fly.dev
     steps:
       - run: echo "Enregistrement de l'URL prod"
