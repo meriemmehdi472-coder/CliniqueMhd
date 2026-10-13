@@ -1,0 +1,21 @@
+name: Afficher les sites
+
+on:
+  workflow_dispatch:   # lancement manuel uniquement
+
+jobs:
+  preprod:
+    runs-on: ubuntu-latest
+    environment:
+      name: preprod
+      url: https://cliniquemhd-preprod.fly.dev
+    steps:
+      - run: echo "Enregistrement de l'URL preprod"
+
+  production:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://cliniquemhd-prod.fly.dev
+    steps:
+      - run: echo "Enregistrement de l'URL prod"
