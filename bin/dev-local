@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -e
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+echo "🚀 Démarrage de l'environnement de développement local CliniqueMhd..."
+
+# Démarrage du backend (Rails)
+echo "📦 Démarrage du Backend (Rails sur le port 3000)..."
+cd "$ROOT_DIR/backend"
+bundle exec rails s -p 3000 &
+BACKEND_PID=$!
+
+# Démarrage du frontend (Vite)
+echo "💻 Démarrage du Frontend (Vite sur le port 5173)..."
+cd "$ROOT_DIR/frontend"
+npm run dev &
+FRONTEND_PID=$!
+
+# Gestion de l'arrêt propre (Ctrl+C)
+trap "echo '🛑 Arrêt des serveurs en cours...'; kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; exit 0" SIGINT SIGTERM
+
+# Attente des processus
+wait
