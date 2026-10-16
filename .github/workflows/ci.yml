@@ -108,3 +108,4 @@ jobs:
           file: Dockerfile
           push: false
           tags: cliniquemhd:test
+          
