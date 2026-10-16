@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
@@ -108,39 +108,3 @@ jobs:
           file: Dockerfile
           push: false
           tags: cliniquemhd:test
-
-  deploy-production:
-    name: Deploy to Production (Fly.io)
-    needs: [docker-build]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: Deploy Production
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-        run: flyctl deploy --config fly.toml --remote-only --yes
-
-  deploy-preprod:
-    name: Deploy to Preproduction (Fly.io)
-    needs: [docker-build]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: Deploy Preproduction
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-        run: flyctl deploy --config fly.rehearsal.toml --remote-only --yes
