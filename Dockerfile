@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1
 
-ARG RUBY_VERSION=3.2.2
+ARG RUBY_VERSION=3.2.9
 
 # --- Stage 1: Build Frontend ---
 FROM node:22-slim AS frontend-build
