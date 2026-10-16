@@ -1,0 +1,42 @@
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  deploy-preprod:
+    name: Deploy to Preprod
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment: Preprod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Preprod (develop branch)
+        run: flyctl deploy --config fly.rehearsal.toml --app preprod-cliniquemhd --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  deploy-prod:
+    name: Deploy to Production
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: Prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Production (main branch)
+        run: flyctl deploy --config fly.toml --app cliniquemhd --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
