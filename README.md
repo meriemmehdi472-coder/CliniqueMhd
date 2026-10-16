@@ -12,10 +12,8 @@ Permettre aux patients de prendre rendez-vous avec un médecin et faciliter la g
 
 ## Technologies
 
-- React
-- TypeScript
-- Tailwind CSS
-- Ruby on Rails
+- React / Vite (TypeScript)
+- Ruby on Rails (API / Backend)
 - PostgreSQL
 
 ## Structure
@@ -24,6 +22,8 @@ Permettre aux patients de prendre rendez-vous avec un médecin et faciliter la g
 CliniqueMhd/
 ├── frontend/
 ├── backend/
+├── bin/
+│   └── dev-local
 ├── docs/
 └── README.md
 ```
