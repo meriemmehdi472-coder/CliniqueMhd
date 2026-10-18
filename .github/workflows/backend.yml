@@ -11,6 +11,7 @@ on:
       - develop
 
 jobs:
+<<<<<<<< HEAD:.github/workflows/backend.yml
   backend:
     name: Backend - Tests
     runs-on: ubuntu-latest
@@ -37,6 +38,11 @@ jobs:
       run:
         working-directory: backend
 
+========
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+>>>>>>>> origin/main:.github/workflows/ci.yml
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -80,3 +86,7 @@ jobs:
           file: Dockerfile
           push: false
           tags: cliniquemhd:test
+<<<<<<<< HEAD:.github/workflows/backend.yml
+========
+          
+>>>>>>>> origin/main:.github/workflows/ci.yml

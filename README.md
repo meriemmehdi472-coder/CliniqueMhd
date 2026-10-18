@@ -3,8 +3,9 @@
 CliniqueMhd est une plateforme web de gestion de rendez-vous médicaux.
 
 > **Accès rapides :**
-> - 🚀 **Production :** [cliniquemhd.fly.dev](https://cliniquemhd.fly.dev)
-> - 🧪 **Préproduction :** [preprod-cliniquemhd.fly.dev](https://preprod-cliniquemhd.fly.dev)
+> - 🚀 **Production :** [cliniquemhd-prod.fly.dev](https://cliniquemhd-prod.fly.dev)
+> - 🧪 **Préproduction :** [cliniquemhd-preprod.fly.dev](https://cliniquemhd-preprod.fly.dev)
+> - ⚙️ **CI/CD :** Workflows séparés (`front.yml` / `backend.yml`) et déploiement Fly.io.
 
 ## Objectif
 
