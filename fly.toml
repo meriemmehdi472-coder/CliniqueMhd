@@ -1,4 +1,4 @@
-app = "cliniquemhd-prod"
+app = "cliniquemhd"
 primary_region = "cdg"
 
 [build]
