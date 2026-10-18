@@ -82,8 +82,8 @@ Ce document sert de support de présentation et de script pour la **Démo 2** du
 ### Slide 6 : Déploiement Continu (CD) & Cloud
 - **Titre :** Stratégie de Déploiement (Fly.io)
 - **Points clés :**
-  - **Environnement de Préproduction (`develop`) :** Application `cliniquemhd-preprod` (`fly.rehearsal.toml`).
-  - **Environnement de Production (`main`) :** Application `cliniquemhd-prod` (`fly.toml`).
+  - **Environnement de Préproduction (`develop`) :** Application `preprod-cliniquemhd` (`fly.rehearsal.toml`).
+  - **Environnement de Production (`main`) :** Application `cliniquemhd` (`fly.toml`).
   - Déploiement entièrement automatisé via le pipeline dès qu'un merge est validé.
 - **Discours :**
   > "Enfin, notre pipeline gère le déploiement continu sur Fly.io. Les modifications sur la branche `develop` sont automatiquement déployées sur notre environnement de préproduction, tandis que la branche `main` met à jour la production. Tout est sécurisé via des tokens d'API chiffrés sur GitHub."
