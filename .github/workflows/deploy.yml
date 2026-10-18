@@ -20,7 +20,7 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy to Preprod (develop branch)
-        run: flyctl deploy --config fly.rehearsal.toml --app preprod-cliniquemhd --remote-only
+        run: flyctl deploy --config fly.rehearsal.toml --app cliniquemhd-preprod --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
@@ -37,6 +37,6 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy to Production (main branch)
-        run: flyctl deploy --config fly.toml --app cliniquemhd --remote-only
+        run: flyctl deploy --config fly.toml --app cliniquemhd-prod --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
