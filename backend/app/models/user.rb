@@ -7,7 +7,9 @@ class User < ApplicationRecord
 
   normalizes :email, with: ->(email) { email.strip.downcase }
 
-  validates :email, :password_digest, :role, presence: true
+  has_secure_password
+
+  validates :email, :role, presence: true
   validates :email, uniqueness: { case_sensitive: false }
   validates :role, inclusion: { in: ROLES }
 end
