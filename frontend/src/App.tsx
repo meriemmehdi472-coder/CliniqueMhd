@@ -1,4 +1,5 @@
 import { AuthScreen } from './components/auth/AuthScreen';
+import { DoctorDashboard } from './components/dashboard/DoctorDashboard';
 import { PatientDashboard } from './components/dashboard/PatientDashboard';
 import { useAuth } from './hooks/useAuth';
 
@@ -10,5 +11,6 @@ export default function App() {
   }
 
   if (!auth.user) return <AuthScreen onAuthenticated={auth.authenticate} />;
+  if (auth.user.role === 'medecin') return <DoctorDashboard user={auth.user} onLogout={auth.logout} />;
   return <PatientDashboard user={auth.user} onLogout={auth.logout} />;
 }
