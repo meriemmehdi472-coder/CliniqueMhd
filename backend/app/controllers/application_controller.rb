@@ -14,6 +14,12 @@ class ApplicationController < ActionController::API
   end
 
   def user_json(user)
-    { id: user.id, email: user.email, role: user.role, nom: user.patient&.nom, prenom: user.patient&.prenom }
+    profile = case user.role
+    when "patient" then user.patient
+    when "medecin" then user.medecin
+    when "assistant" then user.assistant
+    end
+
+    { id: user.id, email: user.email, role: user.role, nom: profile&.nom, prenom: profile&.prenom }
   end
 end
