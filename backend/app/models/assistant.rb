@@ -2,6 +2,7 @@ class Assistant < ApplicationRecord
   self.primary_key = :id_assistant
 
   belongs_to :user, optional: true
+  belongs_to :specialty
   has_many :medecins, class_name: "Medecin", foreign_key: :id_assistant, primary_key: :id_assistant, dependent: :nullify
   has_many :rendez_vous, class_name: "RendezVous", foreign_key: :id_assistant, primary_key: :id_assistant, dependent: :nullify
 
