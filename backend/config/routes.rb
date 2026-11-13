@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     post "session", to: "auth#create"
     get "session", to: "auth#show"
     delete "session", to: "auth#destroy"
+    get "dashboard/:role", to: "dashboards#show"
   end
 
   # Defines the root path route ("/")
