@@ -10,15 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_11_04_000700) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_05_000500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "assistants", primary_key: "id_assistant", force: :cascade do |t|
     t.string "nom", null: false
     t.string "prenom", null: false
-    t.string "email"
+    t.string "email_contact"
     t.string "telephone"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_assistants_on_user_id", unique: true
   end
 
   create_table "diagnostics", primary_key: "id_diagnostic", force: :cascade do |t|
@@ -48,11 +50,14 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_04_000700) do
   create_table "medecins", primary_key: "id_medecin", force: :cascade do |t|
     t.string "nom", null: false
     t.string "prenom", null: false
-    t.string "specialite"
-    t.string "email"
+    t.string "email_contact"
     t.string "telephone"
     t.bigint "id_assistant"
+    t.bigint "user_id"
+    t.bigint "specialty_id"
     t.index ["id_assistant"], name: "index_medecins_on_id_assistant"
+    t.index ["specialty_id"], name: "index_medecins_on_specialty_id"
+    t.index ["user_id"], name: "index_medecins_on_user_id", unique: true
   end
 
   create_table "patients", primary_key: "id_patient", force: :cascade do |t|
@@ -60,9 +65,11 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_04_000700) do
     t.string "prenom", null: false
     t.date "date_naissance"
     t.text "sexe"
-    t.string "email"
+    t.string "email_contact"
     t.string "telephone"
     t.string "adresse"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_patients_on_user_id", unique: true
   end
 
   create_table "rendez_vous", primary_key: "id_rdv", force: :cascade do |t|
@@ -78,10 +85,32 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_04_000700) do
     t.index ["id_patient"], name: "index_rendez_vous_on_id_patient"
   end
 
+  create_table "specialties", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index "lower((name)::text)", name: "index_specialties_on_lower_name", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.string "role", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index "lower((email)::text)", name: "index_users_on_lower_email", unique: true
+    t.check_constraint "role::text = ANY (ARRAY['patient'::character varying, 'medecin'::character varying, 'assistant'::character varying]::text[])", name: "users_role_must_be_valid"
+  end
+
+  add_foreign_key "assistants", "users"
   add_foreign_key "diagnostics", "rendez_vous", column: "id_rdv", primary_key: "id_rdv"
   add_foreign_key "disponibilites", "medecins", column: "medcin_id", primary_key: "id_medecin"
   add_foreign_key "documents", "patients", column: "id_patient", primary_key: "id_patient"
   add_foreign_key "medecins", "assistants", column: "id_assistant", primary_key: "id_assistant"
+  add_foreign_key "medecins", "specialties"
+  add_foreign_key "medecins", "users"
+  add_foreign_key "patients", "users"
   add_foreign_key "rendez_vous", "assistants", column: "id_assistant", primary_key: "id_assistant"
   add_foreign_key "rendez_vous", "medecins", column: "id_medecin", primary_key: "id_medecin"
   add_foreign_key "rendez_vous", "patients", column: "id_patient", primary_key: "id_patient"
