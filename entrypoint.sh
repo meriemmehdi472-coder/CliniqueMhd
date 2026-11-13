@@ -2,7 +2,7 @@
 
 # Prepare database if running rails server or general startup
 cd /rails
-bundle exec rails db:prepare || true
+bundle exec rails db:prepare
 
 # Start Nginx in the background
 echo "Starting Nginx..."
