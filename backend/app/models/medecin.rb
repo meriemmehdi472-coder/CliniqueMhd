@@ -9,10 +9,21 @@ class Medecin < ApplicationRecord
 
   validates :user, presence: true, on: :create
   validate :user_must_have_medecin_role
+  validate :assistant_must_share_specialty
 
   private
 
   def user_must_have_medecin_role
     errors.add(:user, "doit avoir le rôle médecin") if user && user.role != "medecin"
+  end
+
+  def assistant_must_share_specialty
+    return unless assistant
+
+    if assistant.specialty_id.blank?
+      errors.add(:assistant, "doit avoir une spécialité affectée")
+    elsif specialty_id != assistant.specialty_id
+      errors.add(:specialty, "doit être celle de l’assistant")
+    end
   end
 end
