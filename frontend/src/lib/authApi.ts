@@ -19,7 +19,16 @@ export async function authenticate(mode: 'login' | 'register', payload: Record<s
   if (!response.ok || !data.user) {
     throw new Error(data.error || data.errors?.join(', ') || 'Une erreur est survenue.');
   }
+  await verifyDashboardRole(data.user.role);
   return data.user;
+}
+
+async function verifyDashboardRole(role: string) {
+  const response = await fetch(`/api/dashboard/${encodeURIComponent(role)}`, { credentials: 'include' });
+  if (response.ok) return;
+
+  const data = await response.json().catch(() => ({})) as { error?: string };
+  throw new Error(data.error || 'Vous n’avez pas accès à cet espace.');
 }
 
 export async function endSession() {
@@ -36,5 +45,6 @@ export async function currentSession() {
   const response = await fetch('/api/session', { credentials: 'include' });
   if (!response.ok) return null;
   const data = await response.json() as { user: AuthUser };
+  await verifyDashboardRole(data.user.role);
   return data.user;
 }
