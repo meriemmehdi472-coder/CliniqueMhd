@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { usePatientDashboard } from '../../hooks/usePatientDashboard';
 import { useToast } from '../../hooks/useToast';
-import type { AuthUser, DashboardSection } from '../../types/clinic';
+import type { AuthUser, DashboardSection, RoleDashboardData } from '../../types/clinic';
 import { AppointmentSection } from './AppointmentSection';
 import { DocumentSection } from './DocumentSection';
 import { HomeSection } from './HomeSection';
@@ -9,7 +9,7 @@ import { MedicalRecordSection } from './MedicalRecordSection';
 import { ProfileSection } from './ProfileSection';
 import { Sidebar } from './Sidebar';
 
-export function PatientDashboard({ user, onLogout }: { user: AuthUser; onLogout: () => Promise<void> }) {
+export function PatientDashboard({ user, data, onLogout }: { user: AuthUser; data: RoleDashboardData; onLogout: () => Promise<void> }) {
   const [activeSection, setActiveSection] = useState<DashboardSection>('accueil');
   const { message, showToast } = useToast();
   const dashboard = usePatientDashboard(showToast);
@@ -23,9 +23,8 @@ export function PatientDashboard({ user, onLogout }: { user: AuthUser; onLogout:
     }} />
     <main className="min-w-0 flex-1 p-5 sm:p-8 lg:p-10">
       {activeSection === 'accueil' && <HomeSection
-        name={user.prenom || 'patient'} appointments={dashboard.appointments} documents={dashboard.documents}
-        onNavigate={setActiveSection} onToggleAppointment={dashboard.toggleAppointment}
-        onDeleteDocument={dashboard.deleteDocument} showToast={showToast}
+        name={user.prenom || 'patient'} appointments={data.appointments} documents={data.documents || []}
+        onNavigate={setActiveSection}
       />}
       {activeSection === 'rdv' && <AppointmentSection onBook={dashboard.bookAppointment} onBack={goHome} />}
       {activeSection === 'document' && <DocumentSection onUpload={dashboard.addDocument} onBack={goHome} />}

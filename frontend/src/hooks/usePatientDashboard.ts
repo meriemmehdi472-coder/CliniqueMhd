@@ -2,27 +2,23 @@ import { useState } from 'react';
 import type { Appointment, DocumentItem } from '../types/clinic';
 
 export function usePatientDashboard(showToast: (message: string) => void) {
-  const [appointments, setAppointments] = useState<Appointment[]>([
-    { id: '1', specialty: 'Médecine générale', doctor: 'Dr. Jean Martin', date: '2026-07-09', time: '10:30', status: 'confirmé' },
-  ]);
-  const [documents, setDocuments] = useState<DocumentItem[]>([
-    { id: '1', title: 'Ordonnance - Consultation générale', type: 'Ordonnance', date: '02/07/2026', size: '245 Ko' },
-  ]);
-  const [bloodGroup, setBloodGroup] = useState('A+');
-  const [allergies, setAllergies] = useState('Aucune signalée');
-  const [emergencyContact, setEmergencyContact] = useState('Marie Martin (06 12 34 56 78)');
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [documents, setDocuments] = useState<DocumentItem[]>([]);
+  const [bloodGroup, setBloodGroup] = useState('');
+  const [allergies, setAllergies] = useState('');
+  const [emergencyContact, setEmergencyContact] = useState('');
   const [isEditingRecord, setIsEditingRecord] = useState(false);
 
   function bookAppointment(appointment: Omit<Appointment, 'id' | 'status'>) {
     setAppointments(previous => [{ ...appointment, id: Date.now().toString(), status: 'confirmé' }, ...previous]);
-    showToast('Rendez-vous réservé avec succès !');
+    showToast('Demande simulée : elle n’est pas encore enregistrée en base.');
   }
 
   function toggleAppointment(id: string) {
     setAppointments(previous => previous.map(item => item.id === id
       ? { ...item, status: item.status === 'confirmé' ? 'annulé' : 'confirmé' }
       : item));
-    showToast('Statut du rendez-vous mis à jour.');
+    showToast('Statut modifié localement, sans enregistrement en base.');
   }
 
   function addDocument(title: string, type: string) {
@@ -30,7 +26,7 @@ export function usePatientDashboard(showToast: (message: string) => void) {
       id: Date.now().toString(), title, type,
       date: new Date().toLocaleDateString('fr-FR'), size: '1,2 Mo',
     }, ...previous]);
-    showToast('Document transmis.');
+    showToast('Document simulé : aucun fichier n’a été envoyé au serveur.');
   }
 
   function deleteDocument(id: string) {
@@ -40,7 +36,7 @@ export function usePatientDashboard(showToast: (message: string) => void) {
 
   function saveMedicalRecord() {
     setIsEditingRecord(false);
-    showToast('Dossier médical mis à jour.');
+    showToast('Dossier modifié localement, sans enregistrement en base.');
   }
 
   return {

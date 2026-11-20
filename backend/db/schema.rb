@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_11_05_000500) do
+ActiveRecord::Schema[7.1].define(version: 2026_11_13_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_05_000500) do
     t.string "email_contact"
     t.string "telephone"
     t.bigint "user_id"
+    t.bigint "specialty_id"
+    t.index ["specialty_id"], name: "index_assistants_on_specialty_id", unique: true
     t.index ["user_id"], name: "index_assistants_on_user_id", unique: true
   end
 
@@ -103,6 +105,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_11_05_000500) do
     t.check_constraint "role::text = ANY (ARRAY['patient'::character varying, 'medecin'::character varying, 'assistant'::character varying]::text[])", name: "users_role_must_be_valid"
   end
 
+  add_foreign_key "assistants", "specialties"
   add_foreign_key "assistants", "users"
   add_foreign_key "diagnostics", "rendez_vous", column: "id_rdv", primary_key: "id_rdv"
   add_foreign_key "disponibilites", "medecins", column: "medcin_id", primary_key: "id_medecin"
