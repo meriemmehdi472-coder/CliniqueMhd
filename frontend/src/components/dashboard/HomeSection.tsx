@@ -1,15 +1,16 @@
 import type { Appointment, DashboardSection, DocumentItem } from '../../types/clinic';
 
-export function HomeSection({ name, appointments, documents, onNavigate, onToggleAppointment, onDeleteDocument, showToast }: {
+export function HomeSection({ name, appointments, documents, onNavigate, onDeleteDocument, showToast }: {
   name: string;
   appointments: Appointment[];
   documents: DocumentItem[];
   onNavigate: (section: DashboardSection) => void;
-  onToggleAppointment: (id: string) => void;
   onDeleteDocument: (id: string) => void;
   showToast: (message: string) => void;
 }) {
-  const activeAppointment = appointments.find(item => item.status === 'confirmé');
+  const activeAppointment = appointments
+    .filter(item => item.status.toLowerCase() !== 'annulé' && new Date(`${item.date}T${item.time}`) > new Date())
+    .sort((a, b) => new Date(`${a.date}T${a.time}`).getTime() - new Date(`${b.date}T${b.time}`).getTime())[0];
   const actions: { section: DashboardSection; icon: string; title: string; description: string }[] = [
     { section: 'rdv', icon: '📅', title: 'Prendre un rendez-vous', description: 'Choisissez un créneau avec votre médecin' },
     { section: 'document', icon: '📄', title: 'Envoyer un document', description: 'Partagez une pièce jointe à la clinique' },
@@ -21,11 +22,11 @@ export function HomeSection({ name, appointments, documents, onNavigate, onToggl
     <section className={`mb-8 flex flex-col gap-5 rounded-2xl p-6 text-white shadow-lg sm:flex-row sm:items-center sm:justify-between ${activeAppointment ? 'bg-gradient-to-r from-violet-600 to-indigo-700 shadow-violet-600/20' : 'bg-slate-500'}`}>
       <div className="flex items-center gap-4">
         <span className="rounded-xl bg-white/15 p-3 text-2xl">📅</span>
-        <div><p className="text-xs font-bold uppercase tracking-wide text-white/80">{activeAppointment ? `Prochain rendez-vous (${activeAppointment.specialty})` : 'Aucun rendez-vous actif'}</p>
+        <div><p className="text-xs font-bold uppercase tracking-wide text-white/80">{activeAppointment ? `Prochain rendez-vous${activeAppointment.specialty ? ` (${activeAppointment.specialty})` : ''}` : 'Aucun rendez-vous actif'}</p>
           <p className="mt-1 text-lg font-bold">{activeAppointment ? `${activeAppointment.doctor} — ${activeAppointment.date} à ${activeAppointment.time}` : 'Prenez rendez-vous avec la clinique.'}</p></div>
       </div>
       {activeAppointment
-        ? <button className="rounded-lg border border-white/40 px-4 py-2 text-sm font-semibold hover:bg-white/10" onClick={() => onToggleAppointment(activeAppointment.id)}>Annuler</button>
+        ? <button className="rounded-lg border border-white/40 px-4 py-2 text-sm font-semibold hover:bg-white/10" onClick={() => onNavigate('rdv')}>Gérer mes rendez-vous</button>
         : <button className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-indigo-700 hover:bg-indigo-50" onClick={() => onNavigate('rdv')}>Prendre un rendez-vous</button>}
     </section>
     <div className="mb-8 grid gap-4 md:grid-cols-3">

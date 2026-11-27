@@ -23,11 +23,22 @@ export function PatientDashboard({ user, onLogout }: { user: AuthUser; onLogout:
     }} />
     <main className="min-w-0 flex-1 p-5 sm:p-8 lg:p-10">
       {activeSection === 'accueil' && <HomeSection
-        name={user.prenom || 'patient'} appointments={dashboard.appointments} documents={dashboard.documents}
-        onNavigate={setActiveSection} onToggleAppointment={dashboard.toggleAppointment}
-        onDeleteDocument={dashboard.deleteDocument} showToast={showToast}
+        name={user.prenom || 'patient'}
+        appointments={dashboard.appointments}
+        documents={dashboard.documents}
+        onNavigate={setActiveSection}
+        onDeleteDocument={dashboard.deleteDocument}
+        showToast={showToast}
       />}
-      {activeSection === 'rdv' && <AppointmentSection onBook={dashboard.bookAppointment} onBack={goHome} />}
+      {activeSection === 'rdv' && <AppointmentSection
+        appointments={dashboard.appointments}
+        doctors={dashboard.doctors}
+        loading={dashboard.loadingAppointments}
+        onBook={dashboard.bookAppointment}
+        onUpdate={dashboard.rescheduleAppointment}
+        onCancel={dashboard.cancelPatientAppointment}
+        onBack={goHome}
+      />}
       {activeSection === 'document' && <DocumentSection onUpload={dashboard.addDocument} onBack={goHome} />}
       {activeSection === 'dossier' && <MedicalRecordSection
         bloodGroup={dashboard.bloodGroup} setBloodGroup={dashboard.setBloodGroup}
