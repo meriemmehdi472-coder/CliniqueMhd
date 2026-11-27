@@ -2,7 +2,7 @@ import type { DashboardSection } from '../../types/clinic';
 
 const links: { id: DashboardSection; icon: string; label: string }[] = [
   { id: 'accueil', icon: '⌂', label: 'Accueil' },
-  { id: 'rdv', icon: '▦', label: 'Prendre un rendez-vous' },
+  { id: 'rdv', icon: '▦', label: 'Mes rendez-vous' },
   { id: 'document', icon: '▤', label: 'Envoyer un document' },
   { id: 'dossier', icon: '▣', label: 'Mon dossier médical' },
   { id: 'parametres', icon: '⚙', label: 'Paramètres & Profil' },

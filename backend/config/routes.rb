@@ -12,6 +12,11 @@ Rails.application.routes.draw do
     get "session", to: "auth#show"
     delete "session", to: "auth#destroy"
     get "dashboard/:role", to: "dashboards#show"
+    get "doctors", to: "appointments#doctors"
+    get "appointments", to: "appointments#index"
+    post "appointments", to: "appointments#create"
+    patch "appointments/:id", to: "appointments#update"
+    delete "appointments/:id", to: "appointments#destroy"
   end
 
   # Defines the root path route ("/")

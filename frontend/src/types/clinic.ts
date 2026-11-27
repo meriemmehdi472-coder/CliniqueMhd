@@ -8,13 +8,21 @@ export interface AuthUser {
 
 export type DashboardSection = 'accueil' | 'rdv' | 'document' | 'dossier' | 'parametres';
 
+export interface Doctor {
+  id: number;
+  name: string;
+  specialty: string| null;
+}
+
 export interface Appointment {
   id: string;
-  specialty: string;
+  doctorId: number;
+  specialty: string | null;
   doctor: string;
   date: string;
   time: string;
-  status: 'confirmé' | 'annulé';
+  reason?: string;
+  status: string;
 }
 
 export interface DocumentItem {

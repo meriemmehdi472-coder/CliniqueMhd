@@ -5,4 +5,6 @@ class RendezVous < ApplicationRecord
   belongs_to :medecin, foreign_key: :id_medecin, primary_key: :id_medecin
   belongs_to :assistant, optional: true, foreign_key: :id_assistant, primary_key: :id_assistant
   has_many :diagnostics, class_name: "Diagnostic", foreign_key: :id_rdv, primary_key: :id_rdv, dependent: :restrict_with_error
+  validates :date, :heure_rdv, :statut, presence: true
+  validates :motif, length: { maximum: 255}, allow_blank: true
 end

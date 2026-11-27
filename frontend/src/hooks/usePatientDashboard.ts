@@ -1,34 +1,87 @@
-import { useState } from 'react';
-import type { Appointment, DocumentItem } from '../types/clinic';
+
+import { useEffect, useState } from 'react';
+import type { Appointment, DocumentItem, Doctor } from '../types/clinic';
+import {
+  cancelAppointment,
+  createAppointment,
+  fetchAppointments,
+  fetchDoctors,
+  updateAppointment,
+  type AppointmentInput,
+} from '../lib/appointmentsApi';
 
 export function usePatientDashboard(showToast: (message: string) => void) {
-  const [appointments, setAppointments] = useState<Appointment[]>([
-    { id: '1', specialty: 'Médecine générale', doctor: 'Dr. Jean Martin', date: '2026-07-09', time: '10:30', status: 'confirmé' },
-  ]);
-  const [documents, setDocuments] = useState<DocumentItem[]>([
-    { id: '1', title: 'Ordonnance - Consultation générale', type: 'Ordonnance', date: '02/07/2026', size: '245 Ko' },
-  ]);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [documents, setDocuments] = useState<DocumentItem[]>([]);
   const [bloodGroup, setBloodGroup] = useState('A+');
   const [allergies, setAllergies] = useState('Aucune signalée');
-  const [emergencyContact, setEmergencyContact] = useState('Marie Martin (06 12 34 56 78)');
+  const [emergencyContact, setEmergencyContact] = useState('');
   const [isEditingRecord, setIsEditingRecord] = useState(false);
+  const [loadingAppointments, setLoadingAppointments] = useState(true);
 
-  function bookAppointment(appointment: Omit<Appointment, 'id' | 'status'>) {
-    setAppointments(previous => [{ ...appointment, id: Date.now().toString(), status: 'confirmé' }, ...previous]);
-    showToast('Rendez-vous réservé avec succès !');
+  useEffect(() => {
+    async function load() {
+      try {
+        const [loadedAppointments, loadedDoctors] = await Promise.all([
+          fetchAppointments(),
+          fetchDoctors(),
+        ]);
+
+        setAppointments(loadedAppointments);
+        setDoctors(loadedDoctors);
+      } catch (error) {
+        showToast(error instanceof Error ? error.message : 'Chargement impossible.');
+      } finally {
+        setLoadingAppointments(false);
+      }
+    }
+
+    void load();
+  }, [showToast]);
+
+  async function bookAppointment(input: AppointmentInput) {
+    try {
+      const result = await createAppointment(input);
+      setAppointments(previous => [result.appointment, ...previous]);
+      showToast('Demande de rendez-vous envoyée.');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Réservation impossible.');
+      throw error;
+    }
   }
 
-  function toggleAppointment(id: string) {
-    setAppointments(previous => previous.map(item => item.id === id
-      ? { ...item, status: item.status === 'confirmé' ? 'annulé' : 'confirmé' }
-      : item));
-    showToast('Statut du rendez-vous mis à jour.');
+  async function cancelPatientAppointment(id: string) {
+    try {
+      await cancelAppointment(id);
+      setAppointments(previous => previous.map(item =>
+        item.id === id ? { ...item, status: 'Annulé' } : item
+      ));
+      showToast('Rendez-vous annulé.');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Annulation impossible.');
+      throw error;
+    }
+  }
+
+  async function rescheduleAppointment(id: string, input: AppointmentInput) {
+    try {
+      const result = await updateAppointment(id, input);
+      setAppointments(previous => previous.map(item => item.id === id ? result.appointment : item));
+      showToast('Rendez-vous modifié.');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Modification impossible.');
+      throw error;
+    }
   }
 
   function addDocument(title: string, type: string) {
     setDocuments(previous => [{
-      id: Date.now().toString(), title, type,
-      date: new Date().toLocaleDateString('fr-FR'), size: '1,2 Mo',
+      id: Date.now().toString(),
+      title,
+      type,
+      date: new Date().toLocaleDateString('fr-FR'),
+      size: '1,2 Mo',
     }, ...previous]);
     showToast('Document transmis.');
   }
@@ -44,8 +97,23 @@ export function usePatientDashboard(showToast: (message: string) => void) {
   }
 
   return {
-    appointments, documents, bloodGroup, setBloodGroup, allergies, setAllergies,
-    emergencyContact, setEmergencyContact, isEditingRecord, setIsEditingRecord,
-    bookAppointment, toggleAppointment, addDocument, deleteDocument, saveMedicalRecord,
+    appointments,
+    doctors,
+    loadingAppointments,
+    documents,
+    bloodGroup,
+    setBloodGroup,
+    allergies,
+    setAllergies,
+    emergencyContact,
+    setEmergencyContact,
+    isEditingRecord,
+    setIsEditingRecord,
+    bookAppointment,
+    rescheduleAppointment,
+    cancelPatientAppointment,
+    addDocument,
+    deleteDocument,
+    saveMedicalRecord,
   };
 }
